@@ -38,6 +38,7 @@ end
 group :development do
   gem 'mongrel', :require => nil, :platforms => :ruby_18
   gem 'thin', :require => nil, :platforms => :ruby_19
+  gem 'pry'
 end
 
 group :development, :test do
