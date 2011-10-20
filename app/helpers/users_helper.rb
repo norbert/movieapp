@@ -57,13 +57,11 @@ module UsersHelper
   end
   
   def positive(user)
-    positive = user.watched.liked.count * 100 / user.watched.count
-    %(<em class="liked">#{positive}%</em> positive).html_safe
+    %(<em class="liked">#{user.percent_positive}%</em> positive).html_safe
   end
   
   def hater(user)
-    hater = user.watched.disliked.count * 100 / user.watched.count
-    %(<em class="disliked">#{hater}%</em> hater).html_safe
+    %(<em class="disliked">#{user.percent_hater}%</em> hater).html_safe
   end
   
   def life_wasted(user)
@@ -76,7 +74,7 @@ module UsersHelper
 
     %(<span title="Total time spent watching these movies">#{amount}</span>).html_safe
   end
-  
+
   def link_to_compare(user1, user2)
     compat = User::Compare.compatibility(user1, user2)
     link_to "<span>compatibility: </span><em>#{show_compatibility(compat)}</em>".html_safe,

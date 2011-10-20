@@ -200,4 +200,49 @@ class User < Mingo
   def delete_login_token(token)
     login_tokens.delete token
   end
+
+  # movie persona
+
+  def percent_positive
+    watched.liked.count * 100 / watched.size
+  end
+
+  def percent_hater
+    watched.disliked.count * 100 / watched.size
+  end
+
+  def persona
+    positive = percent_positive
+    negative = percent_hater
+    traits = []
+
+    traits << 'Easy to Please Reese' if positive >= 80
+    traits << 'Joe Never Says No' if negative <= 5 and positive < 80
+
+    traits << 'Ruthless Ruth' if positive <= 45 # hard to please
+
+    traits << 'Negative Nancy' if negative > 20
+    traits << 'Positive Perry' if (positive >= 65 and positive < 80)
+    if (positive + negative) > 75 and negative > 15
+      traits.clear
+      traits << 'Opinionated Olive'
+    end
+
+    if (positive >= 65 and positive < 80) and negative < 10
+      traits.clear
+      traits << 'Mild Marry'
+    end
+
+    traits << 'Demanding Debra' if (positive > 45 and positive < 60) and negative > 15
+    traits << 'Sensible Sam' if (positive > 45 and positive <= 65 or negative > 5 and negative <= 20) and traits.empty?
+
+    # REMARK: ideally, there should be one trait; keep all possible to experiment and detect logic flaws
+    unless traits.empty?
+      traits.join ', '
+    else
+      'Unique Flower'
+    end
+    # TODO: has to mark min 20 movies to display persona
+  end
+
 end
